@@ -19,7 +19,7 @@ function getUserHome() {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-var home = process.env.INSIGHT_DB || (getUserHome() + '/.insight');
+var home = process.env.INSIGHT_DB || path.join(__dirname, '../db');
 
 if (process.env.INSIGHT_NETWORK === 'livenet') {
   env = 'livenet';
