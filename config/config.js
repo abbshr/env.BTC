@@ -51,7 +51,7 @@ switch (process.env.NODE_ENV) {
 
 var network = process.env.INSIGHT_NETWORK || 'testnet';
 
-var dataDir = process.env.BITCOIND_DATADIR;
+var dataDir = process.env.BITCOIND_DATADIR || path.join(process.env.HOME, 'test/bitcoin_testnet/');
 var isWin = /^win/.test(process.platform);
 var isMac = /^darwin/.test(process.platform);
 var isLinux = /^linux/.test(process.platform);
@@ -68,8 +68,8 @@ var ignoreCache = process.env.INSIGHT_IGNORE_CACHE || 0;
 
 var bitcoindConf = {
   protocol: process.env.BITCOIND_PROTO || 'http',
-  user: process.env.BITCOIND_USER || 'user',
-  pass: process.env.BITCOIND_PASS || 'pass',
+  user: process.env.BITCOIND_USER || 'bitcoinrpc',
+  pass: process.env.BITCOIND_PASS || '2nunWt8559WrT9VkwvvJD16w8gGTbKYDBRKx6irRRVVe',
   host: process.env.BITCOIND_HOST || '127.0.0.1',
   port: process.env.BITCOIND_PORT || b_port,
   p2pPort: process.env.BITCOIND_P2P_PORT || p2p_port,
@@ -104,7 +104,7 @@ module.exports = {
   version: version,
   root: rootPath,
   publicPath: process.env.INSIGHT_PUBLIC_PATH || false,
-  appName: 'Insight ' + env,
+  appName: 'Bitcoin Network Analytics ' + env,
   apiPrefix: '/api',
   port: port,
   leveldb: db,
