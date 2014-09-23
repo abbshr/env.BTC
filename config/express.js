@@ -34,16 +34,17 @@ module.exports = function(app, historicSync, peerSync) {
   app.use(express.methodOverride());
   app.use(express.compress());
 
-  if (config.publicPath) {
-    var staticPath = path.normalize(config.rootPath + '/../' + config.publicPath);
-    //IMPORTANT: for html5mode, this line must to be before app.router
-    app.use(express.static(staticPath));
-  }
-
   /*app.use(function(req, res, next) {
     app.locals.config = config;
     next();
   });*/
+
+  if (config.publicPath) {
+    var staticPath = path.normalize(config.rootPath + '/../' + config.publicPath);
+    //IMPORTANT: for html5mode, this line must to be before app.router
+    var p = path.join(__dirname, '..', staticPath);
+    app.use(express.static(p));
+  }
 
   //routes should be at the last
   app.use(app.router);

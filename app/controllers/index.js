@@ -8,9 +8,9 @@ var _getVersion = function() {
 };
 
 exports.render = function(req, res) {
-  if (config.publicPath) {
+  /*if (config.publicPath) {
     return res.sendfile(config.publicPath + '/index.html');
-  }
+  }*/
 
   var version = _getVersion();
   res.send('insight API v' + version);

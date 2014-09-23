@@ -5,7 +5,7 @@ var ios = null; // io is already taken in express
 var util = require('bitcore').util;
 var logger = require('../../lib/logger').logger;
 
-module.exports.init = function(io_ext) {
+exports.init = function(io_ext) {
   ios = io_ext;
   if (ios) {
     // when a new socket connects
@@ -49,25 +49,25 @@ var fullTx = function(tx) {
   return t;
 };
 
-module.exports.broadcastTx = function(tx) {
+exports.broadcastTx = function(tx) {
   if (ios) {
     var t = (typeof tx === 'string') ? simpleTx(tx) : fullTx(tx);
     ios.sockets.in('inv').emit('tx', t);
   }
 };
 
-module.exports.broadcastBlock = function(block) {
+exports.broadcastBlock = function(block) {
   if (ios)
     ios.sockets.in('inv').emit('block', block);
 };
 
-module.exports.broadcastAddressTx = function(txid, address) {
+exports.broadcastAddressTx = function(txid, address) {
   if (ios) {
     ios.sockets.in(address).emit(address, txid);
   }
 };
 
-module.exports.broadcastSyncInfo = function(historicSync) {
+exports.broadcastSyncInfo = function(historicSync) {
   if (ios)
     ios.sockets.in('sync').emit('status', historicSync);
 };

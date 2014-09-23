@@ -116,7 +116,7 @@ exports.list = function(req, res) {
   var next = lte ? formatTimestamp(new Date(lte * 1000)) :null;
   var limit = parseInt(req.query.limit || DFLT_LIMIT) + 1;
   var more;
-
+console.log(gte, lte);
   bdb.getBlocksByDate(gte, lte, limit, function(err, blockList) {
 
     if (err) {

@@ -52,7 +52,7 @@ module.exports = function(app) {
   app.get(apiPrefix + '/currency', currency.index);
 
   app.get('/getchart', function (req, res) {
-    res.sendfile(__dirname + '/views/chart.html');
+    res.sendfile(require('path').join(__dirname, '..', '/views/chart.html'));
   });
 
   //Home route
