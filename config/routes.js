@@ -51,6 +51,10 @@ module.exports = function(app) {
   var currency = require('../app/controllers/currency');
   app.get(apiPrefix + '/currency', currency.index);
 
+  app.get('/getchart', function (req, res) {
+    res.sendfile(__dirname + '/views/chart.html');
+  });
+
   //Home route
   var index = require('../app/controllers/index');
   app.get(apiPrefix + '/version', index.version);

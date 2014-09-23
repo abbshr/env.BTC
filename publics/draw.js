@@ -1,0 +1,1 @@
+new Chart(ctx).Line(data);
