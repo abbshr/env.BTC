@@ -1,8 +1,9 @@
 
-var xhr = net.ajax('/localhost:3001/api/block', {
-  method: 'GET',
-  data: null,
-  responseType: 'json'
-}, function (res) {
+var xhr = net.ajax(
+  'http://172.16.0.70:3000/api/blocks',
+  {
+    data: 'blockDate=' + start + '&'
+  }
+  , function (res) {
   drawChart(ctx, 'Line', transfer(JSON.parse(res)));
 });
