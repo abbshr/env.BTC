@@ -10,7 +10,7 @@ var Parser             = bitcore.BinaryParser;
 var Buffer             = bitcore.Buffer;
 var TransactionDb      = imports.TransactionDb || require('../../lib/TransactionDb').default();
 var BlockDb            = imports.BlockDb || require('../../lib/BlockDb').default();
-var config              = require('../../config/config');
+var config             = require('../../config/config');
 var CONCURRENCY        = 5;
 
 function Address(addrStr) {

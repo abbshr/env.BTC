@@ -51,8 +51,25 @@ module.exports = function(app) {
   var currency = require('../app/controllers/currency');
   app.get(apiPrefix + '/currency', currency.index);
 
-  app.get('/getchart', function (req, res) {
-    res.sendfile(require('path').join(__dirname, '..', '/views/chart.html'));
+  app.get('/totalbtc', function (req, res) {
+    res.sendfile(require('path').join(__dirname, '..', '/views/total_counts.html'));
+  });
+
+  app.get('/topaddr', function (req, res) {
+    // TODO: find a way to generate/get the sorted data faster?
+    var endate = req.param('endate');
+    // METHOD 1:
+    // 1. get blocks from 2009-1-9 to the given date
+    // 2. get the txs inner blocks
+    // 3. get the addr from every tx
+    // 4. reduce the lists and compute the balance of every addr
+    // 5. response all data
+    // 6. (in client) sort the address
+    //
+    // METHOD 2:
+    // -1. set up database for addresses first
+    // 0. recompute and store the balance result once reciving the incomming txs
+    // 1. get the sorted address by date
   });
 
   //Home route
