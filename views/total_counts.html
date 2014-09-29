@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>Chart</title>
+    <link rel="stylesheet" type="text/css" href="general.css">
+  </head>
+  <body>
+    <h2>Total BTC Query</h2>
+    <canvas id="chart" width='500' height="400"></canvas>
+    <input type='date' id='start_time'>
+    <input type='date' id='end_time'>
+    <input type="button" id='query'>
+
+    <script type="text/javascript" src='Chart.js'></script>
+    <script type="text/javascript" src='net.js'></script>
+    <script type="text/javascript" src='util.js'></script>
+    <script type="text/javascript" src='draw.js'></script>
+    <script type="text/javascript">
+      var ctx = document.querySelector('#chart').getContext('2d');
+      var query = document.querySelector('#query');
+
+      query.addEventListener('click', function (e) {
+        var start = start_time.valueAsNumber;
+        var end = end_time.valueAsNumber;
+
+        // total BTC in a peirod
+        (start <= end) && net.ajax(
+          'http://172.16.0.70:3000/api/blocks',
+          {
+            data: 'blockDate=' + start_time.value + '&startTimestamp=' + end / 1000
+          }
+          , function (err, res) {
+          drawChart(ctx, 'Line', total_counts(res.blocks));
+        });
+      });
+    </script>
+  </body>
+</html>
