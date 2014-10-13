@@ -1,0 +1,98 @@
+/* Transaction */
+
+// to show tx outs
+OUTS_PREFIX = 'txo-'; //txo-<txid>-<n> => [addr, btc_sat]
+SPENT_PREFIX = 'txs-'; //txs-<txid(out)>-<n(out)>-<txid(in)>-<n(in)> = ts
+
+// to sum up addr balance (only outs, spents are gotten later)
+ADDR_PREFIX = 'txa2-'; //txa-<addr>-<tsr>-<txid>-<n> 
+// tsr = 1e13-js_timestamp
+// => + btc_sat [:isConfirmed:[scriptPubKey|isSpendConfirmed:SpentTxid:SpentVout:SpentTs]
+// |balance:txApperances
+
+// txs
+{ key: 'txs-
+        // txid out
+        000000329877c7141c6e50b04ed714a860abcb15135611f6ac92609cb392ef60-
+        // index
+        0-
+        // txid in 
+        58ad7dfa047680549ba3f8a1211e36952f7447b1046fe7dd0783d267f9746f5d-
+        // index
+        2',
+          // timestamp
+  value: '1366923429' 
+}
+
+// txa2
+{ key:
+  'txa2-
+  // addr
+  1111111111111111111114oLvT2-
+  // tsr
+  9998588737797-
+  // txid
+  381f006f5e564875400179642570717dc9bd83880ae9ba9c80c57611678477ec-
+  // index
+  0',
+  value: '10000' 
+}
+
+// txo
+{ key: 'txo-
+        // txid 
+        000000329877c7141c6e50b04ed714a860abcb15135611f6ac92609cb392ef60-
+        // index
+        0',
+        // addr: btc_sat
+  value: '15dDsLzoxHnoZYbab18mxcD5gjc8CLTyEe:2872' 
+}
+
+/* Block */
+
+TIMESTAMP_PREFIX  = 'bts-';     // bts-<ts> => <hash>
+PREV_PREFIX       = 'bpr-';     // bpr-<hash> => <prev_hash> 
+NEXT_PREFIX       = 'bne-';     // bne-<hash> => <next_hash> 
+MAIN_PREFIX       = 'bma-';     // bma-<hash> =>    <height> (0 is unconnected)
+TIP               = 'bti-';     // bti = <hash>:<height> last block on the chain
+
+// txid - blockhash mapping  (only for confirmed txs, ONLY FOR BEST BRANCH CHAIN)
+IN_BLK_PREFIX = 'btx-'; //btx-<txid> = <block> 
+
+// bts
+{ key: 'bts-
+        // timestamp
+        1231006505',
+        // hash
+  value: '000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f' 
+}
+
+// bpr
+{ key: 'bpr-
+        // hash
+        00000000000000000000b7de9e5c19e52be073156924b7cf235efb27ae8a202a',
+        // prev hash
+  value: '00000000000000001e721b3b255fc67519d72ac2f28cb9000864dfe01e95990e' 
+}
+
+// bne
+{ key: 'bpr-
+        // hash
+        0000000000000000181a874bad42a4ed3c7471b0eadb50f7bf9a79dfc231b4a9',
+        // next hash
+  value: '000000000000000008598481175af3bbd938191e21bbf360f84dde49b83934e5' 
+}
+
+// bma
+{ key: 'bma-
+        // hash
+        00000000000000000000b7de9e5c19e52be073156924b7cf235efb27ae8a202a',
+        // height
+  value: '313338' 
+}
+
+// bti
+{ key: 'bti-',
+        // hash:height last block on chain
+  value: '00000000000000000ee5e2835705598f8c54d5fef237de644911db1157c7f804:325127' 
+}
