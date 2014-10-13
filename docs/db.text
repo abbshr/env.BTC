@@ -25,9 +25,8 @@ ADDR_PREFIX = 'txa2-'; //txa-<addr>-<tsr>-<txid>-<n>
 }
 
 // txa2
-{ key:
-  'txa2-
-  // addr
+{ key: 'txa2-
+      // addr
   1111111111111111111114oLvT2-
   // tsr
   9998588737797-
@@ -35,6 +34,7 @@ ADDR_PREFIX = 'txa2-'; //txa-<addr>-<tsr>-<txid>-<n>
   381f006f5e564875400179642570717dc9bd83880ae9ba9c80c57611678477ec-
   // index
   0',
+  // total recived satoshis in this tx
   value: '10000' 
 }
 
@@ -44,7 +44,7 @@ ADDR_PREFIX = 'txa2-'; //txa-<addr>-<tsr>-<txid>-<n>
         000000329877c7141c6e50b04ed714a860abcb15135611f6ac92609cb392ef60-
         // index
         0',
-        // addr: btc_sat
+        // addr: total recived satoshis in this tx
   value: '15dDsLzoxHnoZYbab18mxcD5gjc8CLTyEe:2872' 
 }
 
