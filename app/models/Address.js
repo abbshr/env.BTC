@@ -200,5 +200,8 @@ Address.prototype.update = function(next, opts) {
   });
 };
 
+// addr txs sync
+//TransactionDb.addrSync(Address);
+
 module.exports = require('soop')(Address);
 
