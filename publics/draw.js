@@ -52,3 +52,6 @@ function total_counts(blocks) {
 
 /* statistic the info of the most wealthy accounts */
 function top_accounts(addresses) {}
+
+/*  */
+function total_txs(txs) {}
