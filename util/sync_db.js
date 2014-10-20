@@ -37,7 +37,6 @@ function sync(db) {
       err && console.log(err);
     })
     .on('end', function () {
-      ndbws.end();
       console.log('Read End');
     })
     .on('close', function () {
