@@ -1,3 +1,5 @@
+/* 启动前注意package中的start脚本配置, 字段请手动修改 */
+
 'use strict';
 
 var path = require('path');
@@ -19,8 +21,10 @@ function getUserHome() {
   return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 }
 
-var home = process.env.INSIGHT_DB || path.join(__dirname, '../db');
+// levelDB存储目录, 默认设置为根目录上级的insight-db/
+var home = process.env.INSIGHT_DB || path.join(rootPath, '../insight-db');
 
+// 真实网络环境下需要添加环境变量INSIGHT_NETWORK=livenet
 if (process.env.INSIGHT_NETWORK === 'livenet') {
   env = 'livenet';
   db = home;
@@ -51,6 +55,8 @@ switch (process.env.NODE_ENV) {
 
 var network = process.env.INSIGHT_NETWORK || 'testnet';
 
+// 设置bitcoind的raw数据存储目录, 默认(testnet)为用根目录下的test/bitcoin_testnet
+// 70, livenet : 'external_2/btc/rawblock'
 var dataDir = process.env.BITCOIND_DATADIR || path.join(process.env.HOME, 'test/bitcoin_testnet/');
 var isWin = /^win/.test(process.platform);
 var isMac = /^darwin/.test(process.platform);
@@ -68,8 +74,8 @@ var ignoreCache = process.env.INSIGHT_IGNORE_CACHE || 0;
 
 var bitcoindConf = {
   protocol: process.env.BITCOIND_PROTO || 'http',
-  user: process.env.BITCOIND_USER || 'bitcoinrpc',
-  pass: process.env.BITCOIND_PASS || '2nunWt8559WrT9VkwvvJD16w8gGTbKYDBRKx6irRRVVe',
+  user: process.env.BITCOIND_USER || 'bitcoinrpc', // rpc用户名
+  pass: process.env.BITCOIND_PASS || '2nunWt8559WrT9VkwvvJD16w8gGTbKYDBRKx6irRRVVe', // rpc口令
   host: process.env.BITCOIND_HOST || '127.0.0.1',
   port: process.env.BITCOIND_PORT || b_port,
   p2pPort: process.env.BITCOIND_P2P_PORT || p2p_port,
