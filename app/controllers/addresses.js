@@ -142,24 +142,26 @@ exports.unconfirmedBalance = function(req, res, next) {
     }, {ignoreCache: req.param('noCache')});
 };
 
-
 exports.historicSync = function () {
-  var self = this;
   var curhash;
   MongoClient.connect('mongodb://localhost:27017/addrs', { "native_parser": true, "raw": true }, 
     function (err, db) {
       if (err)
         throw err;
       db.collection('address', function (err, c) {
-        var aDb = level(path.join(__dirname, '../../../../../', 'insight-db/addrs'));
-        aDb.createKeyStream()
-          .on('data', function (hash) {
-            curhash = hash;
-            addrUpdate(c, hash);
+        var aDb = level(path.join(__dirname, '../../../../../', 'insight-db/addrs'), { maxOpenFiles: 500 });
+        //process.on('message', function (msg) {
+          aDb.createReadStream({ start: '12BMBHzfxGsUGWLknBstRYwzVMYtjBCVTS' })
+          .on('data', function (d) {
+            curhash = d.key;
+            //process.send(curhash);
+            d = null;
+            addrUpdate(c, curhash);
+            console.log('update address:', curhash);
           })
           .on('error', function (err) {
             console.log(err);
-            console.log('sync stopped at:', curhash);
+            //console.log('sync stopped at:', curhash);
           })
           .on('end', function () {
             console.log('Sync Finished');
@@ -167,7 +169,8 @@ exports.historicSync = function () {
           })
           .on('close', function () {
             console.log('ReadStream Closed');
-          });  
+          });
+       // });
       });
   });
 };
@@ -179,6 +182,7 @@ function addrUpdate(c, hash) {
       console.log(err);
     else {
       var o = a.getObj();
+      a = null;
       c.update({
         'addrStr': o.addrStr
       }, {
@@ -195,7 +199,6 @@ function addrUpdate(c, hash) {
       }, function (err, result) {
         if (err)
           console.log(err);
-        console.log('update address:', hash);
       });
     }
   }, { txLimit: 0 }); // 不存储txs
