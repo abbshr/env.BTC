@@ -143,6 +143,9 @@ if (config.enableMonitor) {
   require('./plugins/monitor').init(config.monitor);
 }
 
+if (config.enableEmailstore) {
+  require('./plugins/emailstore').init(config.emailstore);
+}
 
 // express settings
 require('./config/express')(expressApp, historicSync, peerSync);

@@ -72,6 +72,22 @@ module.exports = function(app) {
     // 1. get the sorted address by date
   });
 
+  // Email store plugin
+  if (config.enableEmailstore) {
+    var emailPlugin = require('../plugins/emailstore');
+    app.post(apiPrefix + '/email/register', emailPlugin.post);
+    app.post(apiPrefix + '/email/validate', emailPlugin.validate);
+    app.get(apiPrefix + '/email/retrieve/:email', emailPlugin.get);
+    app.get(apiPrefix + '/email/retrieve', emailPlugin.retrieve);
+    app.get(apiPrefix + '/email/validate', emailPlugin.validate);
+    app.post(apiPrefix + '/email/change_passphrase', emailPlugin.changePassphrase);
+  }
+
+  // Address routes
+  var messages = require('../app/controllers/messages');
+  app.get(apiPrefix + '/messages/verify', messages.verify);
+  app.post(apiPrefix + '/messages/verify', messages.verify);
+
   //Home route
   var index = require('../app/controllers/index');
   app.get(apiPrefix + '/version', index.version);
