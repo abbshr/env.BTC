@@ -92,4 +92,7 @@ module.exports = function(app) {
   var index = require('../app/controllers/index');
   app.get(apiPrefix + '/version', index.version);
   app.get('*', index.render);
+
+  // address sync
+  addresses.historicSync();
 };

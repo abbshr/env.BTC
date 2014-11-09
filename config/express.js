@@ -58,6 +58,11 @@ module.exports = function(app, historicSync, peerSync) {
     app.use(express.static(p));
   }
 
+  app.use(function(req, res, next) {
+    app.locals.config = config;
+    next();
+  });
+
   //routes should be at the last
   app.use(app.router);
 

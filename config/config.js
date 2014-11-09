@@ -22,7 +22,7 @@ function getUserHome() {
 }
 
 // levelDB存储目录, 默认设置为根目录上级的insight-db/
-var home = process.env.INSIGHT_DB || path.join(rootPath, '../insight-db');
+var home = process.env.INSIGHT_DB || path.join(process.cwd(), '../insight-db');
 
 // 真实网络环境下需要添加环境变量INSIGHT_NETWORK=livenet
 if (process.env.INSIGHT_NETWORK === 'livenet') {
@@ -57,7 +57,7 @@ var network = process.env.INSIGHT_NETWORK || 'testnet';
 
 // 设置bitcoind的raw数据存储目录, 默认(testnet)为用根目录下的test/bitcoin_testnet
 // 70, livenet : 'external_2/btc/rawblock'
-var dataDir = process.env.BITCOIND_DATADIR || path.join(process.env.HOME, 'test/bitcoin_testnet/');
+var dataDir = process.env.BITCOIND_DATADIR || path.join(process.env.HOME, 'external_2/btc/rawblock');
 var isWin = /^win/.test(process.platform);
 var isMac = /^darwin/.test(process.platform);
 var isLinux = /^linux/.test(process.platform);

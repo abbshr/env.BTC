@@ -8,6 +8,10 @@ var Address = require('../models/Address'),
   common = require('./common'),
   async = require('async');
 
+var MongoClient = require('mongodb').MongoClient;
+var path = require('path');
+var level = require('levelup');
+
 var getAddr = function(req, res, next) {
   var a;
   try {
@@ -137,3 +141,75 @@ exports.unconfirmedBalance = function(req, res, next) {
       }
     }, {ignoreCache: req.param('noCache')});
 };
+
+
+exports.historicSync = function () {
+  var self = this;
+  var curhash;
+  MongoClient.connect('mongodb://localhost:27017/addrs', { "native_parser": true, "raw": true }, 
+    function (err, db) {
+      if (err)
+        throw err;
+      db.collection('address', function (err, c) {
+        var aDb = level(path.join(__dirname, '../../../../../', 'insight-db/addrs'));
+        aDb.createKeyStream()
+          .on('data', function (hash) {
+            curhash = hash;
+            addrUpdate(c, hash);
+          })
+          .on('error', function (err) {
+            console.log(err);
+            console.log('sync stopped at:', curhash);
+          })
+          .on('end', function () {
+            console.log('Sync Finished');
+            db.close();
+          })
+          .on('close', function () {
+            console.log('ReadStream Closed');
+          });  
+      });
+  });
+};
+
+function addrUpdate(c, hash) {
+  var a = new Address(hash);
+  a.update(function (err) {
+    if (err)
+      console.log(err);
+    else {
+      var o = a.getObj();
+      c.update({
+        'addrStr': o.addrStr
+      }, {
+        $set: {
+          'balanceSat': o.balanceSat,
+          'totalReceivedSat': o.totalReceivedSat,
+          'totalSentSat': o.totalSentSat,
+          'unconfirmedBalanceSat': o.unconfirmedBalanceSat,
+          'unconfirmedTxApperances': o.unconfirmedTxApperances,
+          'txApperances': o.txApperances
+        }
+      }, {
+        'upsert': true
+      }, function (err, result) {
+        if (err)
+          console.log(err);
+        console.log('update address:', hash);
+      });
+    }
+  }, { txLimit: 0 }); // 不存储txs
+};
+
+exports.getTopNAddress = function (n, callback) {
+  MongoClient.connect('mongodb://localhost:27017/addrs', { "native_parser": true, "raw": true }, 
+    function (err, db) {
+      if (err)
+        throw err;
+      db.collection('address', function (err, c) {
+        c.find().sort({ balanceSat: -1 }).limit(n).toArray(function (err, r) {
+          callback(r);
+        });
+      });
+  });
+}

@@ -48,7 +48,7 @@
   },
   "bin": "insight.js",
   "scripts": {
-    "start": "INSIGHT_PUBLIC_PATH=publics INSIGHT_NETWORK=testnet node node_modules/grunt-cli/bin/grunt"
+    "start": "INSIGHT_PUBLIC_PATH=publics INSIGHT_NETWORK=livenet node node_modules/grunt-cli/bin/grunt"
   },
   "dependencies": {
     "async": "*",
@@ -75,7 +75,8 @@
     "socket.io-client": "1.0.6",
     "soop": "=0.1.5",
     "winston": "*",
-    "xmlhttprequest": "~1.6.0"
+    "xmlhttprequest": "~1.6.0",
+    "mongodb": "*"
   },
   "devDependencies": {
     "chai": "*",
