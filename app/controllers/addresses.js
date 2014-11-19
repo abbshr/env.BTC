@@ -142,6 +142,7 @@ exports.unconfirmedBalance = function(req, res, next) {
     }, {ignoreCache: req.param('noCache')});
 };
 
+
 exports.historicSync = function () {
   MongoClient.connect('mongodb://localhost:27017/addrs', { "native_parser": true, "raw": true }, 
     function (err, db) {
@@ -170,7 +171,6 @@ function addrUpdate(c, hash) {
       console.log(err);
     else {
       var o = a.getObj();
-      a = null;
       c.update({
         'addrStr': o.addrStr
       }, {
