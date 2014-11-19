@@ -48,7 +48,8 @@
   },
   "bin": "insight.js",
   "scripts": {
-    "start": "INSIGHT_PUBLIC_PATH=publics INSIGHT_NETWORK=livenet node node_modules/grunt-cli/bin/grunt"
+    "start": "INSIGHT_PUBLIC_PATH=publics INSIGHT_NETWORK=livenet node node_modules/grunt-cli/bin/grunt",
+    "test": "INSIGHT_NETWORK=livenet node util/sync_db.js"
   },
   "dependencies": {
     "async": "*",

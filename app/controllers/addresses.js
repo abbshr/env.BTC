@@ -143,34 +143,22 @@ exports.unconfirmedBalance = function(req, res, next) {
 };
 
 exports.historicSync = function () {
-  var curhash;
   MongoClient.connect('mongodb://localhost:27017/addrs', { "native_parser": true, "raw": true }, 
     function (err, db) {
       if (err)
         throw err;
       db.collection('address', function (err, c) {
-        var aDb = level(path.join(__dirname, '../../../../../', 'insight-db/addrs'), { maxOpenFiles: 500 });
-        //process.on('message', function (msg) {
-          aDb.createReadStream({ start: '12BMBHzfxGsUGWLknBstRYwzVMYtjBCVTS' })
-          .on('data', function (d) {
-            curhash = d.key;
-            //process.send(curhash);
-            d = null;
-            addrUpdate(c, curhash);
-            console.log('update address:', curhash);
-          })
-          .on('error', function (err) {
-            console.log(err);
-            //console.log('sync stopped at:', curhash);
-          })
-          .on('end', function () {
-            console.log('Sync Finished');
-            db.close();
-          })
-          .on('close', function () {
-            console.log('ReadStream Closed');
-          });
-       // });
+        if (err)
+          throw err;
+        c.find({
+          addrStr : {
+            $gt: "13rs5eYkRhGpPxv6u25zf9u2Aojgv2mESD"
+          }
+        }).sort({ addrStr: 1 })
+        .each(function (err, item) {
+          addrUpdate(c, item.addrStr);
+          //console.log('update Address:', item.addrStr);
+        });
       });
   });
 };
@@ -178,7 +166,7 @@ exports.historicSync = function () {
 function addrUpdate(c, hash) {
   var a = new Address(hash);
   a.update(function (err) {
-    if (err)
+    if (err) 
       console.log(err);
     else {
       var o = a.getObj();
@@ -199,10 +187,11 @@ function addrUpdate(c, hash) {
       }, function (err, result) {
         if (err)
           console.log(err);
+        console.log('update Address:', hash);
       });
     }
   }, { txLimit: 0 }); // 不存储txs
-};
+}
 
 exports.getTopNAddress = function (n, callback) {
   MongoClient.connect('mongodb://localhost:27017/addrs', { "native_parser": true, "raw": true }, 
@@ -215,4 +204,4 @@ exports.getTopNAddress = function (n, callback) {
         });
       });
   });
-}
+};

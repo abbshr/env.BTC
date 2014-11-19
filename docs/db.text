@@ -12,10 +12,12 @@ ADDR_PREFIX = 'txa2-'; //txa-<addr>-<tsr>-<txid>-<n>
 
 // txs
 { key: 'txs-
+        // address recive
         // txid out
         000000329877c7141c6e50b04ed714a860abcb15135611f6ac92609cb392ef60-
         // index
         0-
+        // spend
         // txid in 
         58ad7dfa047680549ba3f8a1211e36952f7447b1046fe7dd0783d267f9746f5d-
         // index
